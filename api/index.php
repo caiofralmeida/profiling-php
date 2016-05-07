@@ -9,7 +9,10 @@ $di = new Phalcon\Di\FactoryDefault();
 $app = new Phalcon\Mvc\Micro($di);
 
 $app->get('/', function(){
-    echo 'jamal';
+    $resposta = (new \Api\Resposta())
+        ->setConteudo();
+
+    echo $resposta;
 });
 
 $app->post('/', function(){
@@ -20,6 +23,12 @@ $app->post('/', function(){
 
     $arquivo = new \Api\CartaoCreditoEmArquivo();
     $arquivo->salvar($cartaoCredito);
+
+    $resposta = (new \Api\Resposta())
+        ->setCodigo(201)
+        ->setConteudo('Dados criado com sucesso!');
+
+    echo $resposta;
 });
 
 $app->notFound(function(){
