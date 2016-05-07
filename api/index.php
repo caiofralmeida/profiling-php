@@ -9,8 +9,14 @@ $di = new Phalcon\Di\FactoryDefault();
 $app = new Phalcon\Mvc\Micro($di);
 
 $app->get('/', function(){
+
+    $arquivo = new \Api\CartaoCreditoEmArquivo();
+    $cartaoCredito = $arquivo->recuperar();
+
+    $cartaoCredito->descriptografar();
+
     $resposta = (new \Api\Resposta())
-        ->setConteudo();
+        ->setConteudo($cartaoCredito->toArray());
 
     echo $resposta;
 });

@@ -32,18 +32,36 @@ class CartaoCredito
         $this->cvv      = $this->encriptografarCampo($this->cvv);
     }
 
+    public function descriptografar()
+    {
+        $this->numero   = $this->descriptografarCampo($this->numero);
+        $this->validade = $this->descriptografarCampo($this->validade);
+        $this->titular  = $this->descriptografarCampo($this->titular);
+        $this->cvv      = $this->descriptografarCampo($this->cvv);
+    }
+
+    private function descriptografarCampo($campo)
+    {
+        return trim($this->crypt->decrypt(base64_decode($campo), $this->key));
+    }
+
     private function encriptografarCampo($campo)
     {
         return base64_encode($this->crypt->encrypt($campo, $this->key));
     }
 
-    public function toJson()
+    public function toArray()
     {
-        return json_encode([
+        return [
             'numero'  => $this->numero,
             'titular' => $this->titular,
             'validade' => $this->validade,
             'cvv' => $this->cvv
-        ]);
+        ];
+    }
+
+    public function toJson()
+    {
+        return json_encode($this->toArray());
     }
 }

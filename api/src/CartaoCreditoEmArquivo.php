@@ -20,10 +20,10 @@ class CartaoCreditoEmArquivo
     public function recuperar()
     {
         $this->abrirArquivoEmModo(self::LEITURA);
-        $data = fread($this->resource, filesize());
+        $data = fread($this->resource, $this->getTamanho());
         $this->fecharArquivo();
 
-        return new CartaoCredito($data);
+        return new CartaoCredito(json_decode($data));
     }
 
     private function abrirArquivoEmModo($modo)
